@@ -62,7 +62,8 @@ class Autotest
   T0 = Time.at 0
 
   ALL_HOOKS = [ :all_good, :died, :green, :initialize, :interrupt, :quit,
-                :ran_command, :red, :reset, :run_command, :updated, :waiting ]
+                :ran_command, :red, :reset, :run_all_tests, :run_command,
+                :updated, :waiting ]
 
   HOOKS = Hash.new { |h,k| h[k] = [] }
   unless defined? WINDOZE then
@@ -195,7 +196,7 @@ class Autotest
       begin
         get_to_green
         if self.tainted then
-          rerun_all_tests
+          rerun_all_tests unless hook(:run_all_tests)
         else
           hook :all_good
         end
